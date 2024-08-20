@@ -13,33 +13,33 @@
  * **********************************************
  */
 
-
-
 const { Client, GatewayIntentBits, ActivityType, TextChannel } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+
 const client = new Client({
-  intents: Object.keys(GatewayIntentBits).map((a) => {
-    return GatewayIntentBits[a];
-  }),
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent, // If needed for reading message content
+  ],
 });
+
 const app = express();
 const port = 3000;
+
 app.get('/', (req, res) => {
   res.send('YaY Your Bot Status Changed✨');
 });
+
 app.listen(port, () => {
   console.log(`🔗 Listening to RTX: http://localhost:${port}`);
   console.log(`🔗 Powered By RTX`);
 });
 
 const statusMessages = [" "];
-
-
 let currentIndex = 0;
-const channelId = '';
+const channelId = ''; // Add your channel ID here
 
 async function login() {
   try {
@@ -51,41 +51,31 @@ async function login() {
   }
 }
 
-/**
- ██████╗░████████╗██╗░░██╗           
- ██╔══██╗╚══██╔══╝╚██╗██╔╝          
- ██████╔╝░░░██║░░░░╚███╔╝░          
- ██╔══██╗░░░██║░░░░██╔██╗░          
- ██║░░██║░░░██║░░░██╔╝╚██╗          
- ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
-GIT : https://github.com/RTX-GAMINGG/Bot-ghost-status-remover-by-RTX
-  DISCORD SERVER : https://discord.gg/FUEHs7RCqz
-  YOUTUBE : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
- * **********************************************
- *   Code by RTX GAMING
- * **********************************************
- */
-
 function updateStatusAndSendMessages() {
   const currentStatus = statusMessages[currentIndex];
 
-  client.user.setPresence({
-    activities: [{ name: currentStatus, type: ActivityType.Custom}],
-    status: 'dnd',
-  });
+  if (currentStatus) {
+    client.user.setPresence({
+      activities: [{ name: currentStatus, type: ActivityType.Custom }],
+      status: 'dnd', // You can also set this to 'online', 'idle', or 'invisible'
+    });
+  } else {
+    client.user.setPresence({
+      activities: [],
+      status: 'dnd',
+    });
+  }
 
   const textChannel = client.channels.cache.get(channelId);
 
   if (textChannel instanceof TextChannel) {
-   
     textChannel.send(`Bot status is: ${currentStatus}`);
   } else {
-
+    console.error('Channel not found or is not a text channel');
   }
 
   currentIndex = (currentIndex + 1) % statusMessages.length;
 }
-
 
 client.once('ready', () => {
   console.log(`\x1b[36m%s\x1b[0m`, `|    ✅ Bot is ready as ${client.user.tag}`);
@@ -95,7 +85,7 @@ client.once('ready', () => {
 
   setInterval(() => {
     updateStatusAndSendMessages();
-  }, 10000);
+  }, 10000); // Adjust interval as needed
 });
 
 login();
@@ -114,3 +104,4 @@ GIT : https://github.com/RTX-GAMINGG/Bot-ghost-status-remover-by-RTX
  *   Code by RTX GAMING
  * **********************************************
  */
+
