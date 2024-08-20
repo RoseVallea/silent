@@ -22,9 +22,9 @@ app.listen(port, () => {
   console.log(`🔗 Powered By RTX`);
 });
 
-const statusMessages = ["spring on top ﹒ ♡","watching over bubblegum ﹒ ♡","mass ﹔ bypass only ﹒ ♡"];
+const statusMessages = ["over silent ﹒ ♡","you ﹒ ♡","a movie ﹒ ♡"];
 let currentIndex = 0;
-const channelId = ''; // Add your channel ID here
+const channelId = '1275365079747002368'; // Add your channel ID here
 
 async function login() {
   try {
