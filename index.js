@@ -1,46 +1,25 @@
-/**
- ██████╗░████████╗██╗░░██╗           
- ██╔══██╗╚══██╔══╝╚██╗██╔╝          
- ██████╔╝░░░██║░░░░╚███╔╝░          
- ██╔══██╗░░░██║░░░░██╔██╗░          
- ██║░░██║░░░██║░░░██╔╝╚██╗          
- ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
-  GIT : https://github.com/RTX-GAMINGG/Bot-ghost-status-remover-by-RTX
-  DISCORD SERVER : https://discord.gg/FUEHs7RCqz
-  YOUTUBE : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
- * **********************************************
- *   Code by RTX GAMING
- * **********************************************
- */
-
-
-
 const { Client, GatewayIntentBits, ActivityType, TextChannel } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const client = new Client({
-  intents: Object.keys(GatewayIntentBits).map((a) => {
-    return GatewayIntentBits[a];
-  }),
+  intents: Object.keys(GatewayIntentBits).map((a) => GatewayIntentBits[a]),
 });
+
 const app = express();
 const port = 3000;
+
+const statusMessages = ["Status 1", "Status 2", "Status 3"];
+let currentIndex = 0;
+const channelId = 'your-channel-id-here';
+
 app.get('/', (req, res) => {
   res.send('YaY Your Bot Status Changed✨');
 });
+
 app.listen(port, () => {
   console.log(`🔗 Listening to RTX: http://localhost:${port}`);
   console.log(`🔗 Powered By RTX`);
 });
-
-
-const statusMessages = ["testing 1","testing 2","testing 3"];
-
-
-let currentIndex = 0;
-const channelId = '';
 
 async function login() {
   try {
@@ -52,39 +31,19 @@ async function login() {
   }
 }
 
-/**
- ██████╗░████████╗██╗░░██╗           
- ██╔══██╗╚══██╔══╝╚██╗██╔╝          
- ██████╔╝░░░██║░░░░╚███╔╝░          
- ██╔══██╗░░░██║░░░░██╔██╗░          
- ██║░░██║░░░██║░░░██╔╝╚██╗          
- ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
-GIT : https://github.com/RTX-GAMINGG/Bot-ghost-status-remover-by-RTX
-  DISCORD SERVER : https://discord.gg/FUEHs7RCqz
-  YOUTUBE : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
- * **********************************************
- *   Code by RTX GAMING
- * **********************************************
- */
-
-
 function updateStatusAndSendMessages() {
   const currentStatus = statusMessages[currentIndex];
-  const nextStatus = statusMessages[(currentIndex + 1) % statusMessages.length];
 
   client.user.setPresence({
-    activities: [{ name: currentStatus, type: ActivityType.Custom}],
+    activities: [{ name: currentStatus, type: ActivityType.WATCHING }],
     status: 'dnd',
   });
 
-  
   const textChannel = client.channels.cache.get(channelId);
-
   if (textChannel instanceof TextChannel) {
-   
     textChannel.send(`Bot status is: ${currentStatus}`);
   } else {
-
+    console.error('Channel not found or is not a text channel');
   }
 
   currentIndex = (currentIndex + 1) % statusMessages.length;
@@ -92,28 +51,8 @@ function updateStatusAndSendMessages() {
 
 client.once('ready', () => {
   console.log(`\x1b[36m%s\x1b[0m`, `|    ✅ Bot is ready as ${client.user.tag}`);
-  console.log(`\x1b[36m%s\x1b[0m`, `|    ✨HAPPY NEW YEAR MY DEAR FAMILY`);
-  console.log(`\x1b[36m%s\x1b[0m`, `|    ❤️WELCOME TO 2024`);
   updateStatusAndSendMessages();
-
-  setInterval(() => {
-    updateStatusAndSendMessages();
-  }, 10000);
+  setInterval(updateStatusAndSendMessages, 10000);
 });
 
 login();
-
-/**
- ██████╗░████████╗██╗░░██╗           
- ██╔══██╗╚══██╔══╝╚██╗██╔╝          
- ██████╔╝░░░██║░░░░╚███╔╝░          
- ██╔══██╗░░░██║░░░░██╔██╗░          
- ██║░░██║░░░██║░░░██╔╝╚██╗          
- ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
-GIT : https://github.com/RTX-GAMINGG/Bot-ghost-status-remover-by-RTX
-  DISCORD SERVER : https://discord.gg/FUEHs7RCqz
-  YOUTUBE : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
- * **********************************************
- *   Code by RTX GAMING
- * **********************************************
- */
